@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.security.auth.login.LoginException;
-import javax.sound.midi.Soundbank;
 import java.util.List;
 
 @Configuration
@@ -22,6 +21,7 @@ public class BotConfiguration {
     @Bean
     public <T extends Event> JDA gatewayDiscordClient(List<ListenerAdapter> eventListeners) throws LoginException, InterruptedException {
         JDA jda = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+                .addEventListeners(new MessageCreateListener())
                 .build()
                 .awaitReady();
 

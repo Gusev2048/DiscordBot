@@ -29,10 +29,6 @@ public class BotConfiguration {
            jda.addEventListener(listener);
         }
 
-        System.out.println("ololo1");
-        System.out.println(jda.getRegisteredListeners());
-        System.out.println(eventListeners);
-
         return jda;
     }
 }

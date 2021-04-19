@@ -1,46 +1,34 @@
 package com.example.demo;
 
-
 import com.austinv11.servicer.Service;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
+@Configuration
+@Component
 public class MessageCreateListener extends ListenerAdapter {
 
-    public Class<MessageCreateListener> getEventType() {
-        return MessageCreateListener.class;
-    }
+    @Value("${parol}")
+    private String parol;
+    @Value("${otzuv}")
+    private String otzuv;
+
     @Override
     public void onMessageReceived(MessageReceivedEvent eventMessage) {
 
-        System.out.println("ololo2");
-
-
-        List<MessageAction> list = new ArrayList<>();
-
-
        Mono.just(eventMessage)
-//               .filter(message -> message.getAuthor().isBot())
-                .filter(event -> event.getMessage().getContentDisplay().equalsIgnoreCase("!todo"))
+                .filter(message -> !message.getAuthor().isBot())
+                .checkpoint(parol)
+                .checkpoint(otzuv)
+                .filter(event -> event.getMessage().getContentDisplay().equalsIgnoreCase(parol))
                 .map(MessageReceivedEvent::getChannel)
-                .map(channel -> channel.sendMessage("ololo"))
-                .flatMap(RestAction::queue)
-               .checkpoint(String.valueOf(list.add((MessageAction) eventMessage)))
-               .then();
-
-        list
-                .forEach(RestAction::queue);
-        System.out.println("ololo3");
-
+                .map(channel -> channel.sendMessage(otzuv))
+                .subscribe(MessageAction::queue);
     }
-
 }

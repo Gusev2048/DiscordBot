@@ -1,6 +1,6 @@
 package com.BestBot.Core.Listeners;
 
-import com.austinv11.servicer.Service;
+import org.springframework.stereotype.Service;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;

@@ -1,5 +1,6 @@
 package com.BestBot.Core.Configuration;
 
+import com.BestBot.Core.Entity.ItemEntity;
 import com.BestBot.Core.Parsers.CrossoutdbParser;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -36,10 +37,7 @@ public class BotConfiguration {
            jda.addEventListener(listener);
         }
 
-        for(CrossoutdbParser parser : parsersList) {
-            System.out.println(parser.getApi());
-            parser.testTest();
-        }
+        parsersList.forEach(System.out::println);
         return jda;
     }
 }

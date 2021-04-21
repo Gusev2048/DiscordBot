@@ -24,7 +24,6 @@
 			<name>m2-dv8tion</name>
 			<url>https://m2.dv8tion.net/releases</url>
 		</repository>
-
 	</repositories>
 
 	<dependencyManagement>
@@ -52,15 +51,20 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-core</artifactId>
 			<version>${reactor.version}</version>
 
-		</dependency>
-		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -69,37 +73,15 @@
 			<version>4.2.1_253</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-agroal</artifactId>
-			<version>5.4.30.Final</version>
-			<type>pom</type>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>6.0.0.Alpha6</version>
+			<version>5.4.30.Final</version>
 		</dependency>
 
 		<dependency>
@@ -109,11 +91,9 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>6.0.0.Alpha6</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
 	</dependencies>
 
 	<build>

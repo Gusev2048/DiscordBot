@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -14,6 +15,7 @@ import javax.security.auth.login.LoginException;
 import java.util.List;
 
 @Configuration
+@EnableAutoConfiguration
 @PropertySource("classpath:token.properties")
 public class BotConfiguration {
 
@@ -38,7 +40,6 @@ public class BotConfiguration {
             System.out.println(parser.getApi());
             parser.testTest();
         }
-
         return jda;
     }
 }

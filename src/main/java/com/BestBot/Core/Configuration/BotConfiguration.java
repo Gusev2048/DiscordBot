@@ -35,7 +35,8 @@ public class BotConfiguration {
         }
 
         for(CrossoutdbParser parser : parsersList) {
-            System.out.println(parser.getString());
+            System.out.println(parser.getApi());
+            parser.testTest();
         }
 
         return jda;

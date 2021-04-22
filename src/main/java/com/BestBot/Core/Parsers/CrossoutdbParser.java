@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CrossoutdbParser {
     String getApi();
-    List<Object> testTest();
+//    List<Object> testTest();
 
 }

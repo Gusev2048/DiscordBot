@@ -1,46 +1,25 @@
 package com.BestBot.Core.Entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.BestBot.Core.Repository.ItemEntityRepository;
+import lombok.Data;
+import org.springframework.context.ApplicationContext;
 
+import javax.persistence.*;
+
+@Data
 @Entity
 @Table(name = "item")
 public class ItemEntity {
 
     @Id
     private Long id;
-    @Column
     private String name;
-    @Column
-    private String Sashka;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String Category;
+    private int sellPrice;
+    private int buyPrice;
+    private int sellOffers;
+    private int buyOrders;
 
     public ItemEntity() {
-    }
-
-    public ItemEntity(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "ItemEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

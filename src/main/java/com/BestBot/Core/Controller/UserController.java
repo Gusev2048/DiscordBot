@@ -1,6 +1,7 @@
 package com.BestBot.Core.Controller;
 
 import com.BestBot.Core.Parsers.TestParser;
+import com.BestBot.Core.Repository.ItemEntityRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    @Value("${api}")
+    @Value("${getItemApi}")
     private String api;
 
     @GetMapping("/")

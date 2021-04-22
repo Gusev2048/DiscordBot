@@ -1,6 +1,5 @@
 package com.BestBot.Core.Configuration;
 
-import com.BestBot.Core.Entity.ItemEntity;
 import com.BestBot.Core.Parsers.CrossoutdbParser;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -22,12 +21,25 @@ public class BotConfiguration {
 
     private final String token;
 
-    public BotConfiguration(@Value("${token}") String token) {
+    private List<ListenerAdapter> eventListeners;
+
+    private List<CrossoutdbParser> parsersList;
+
+    private JDA jda;
+
+    public BotConfiguration(@Value("${token}") String token, List<ListenerAdapter> eventListeners, List<CrossoutdbParser> parsersList) {
         this.token = token;
+        this.eventListeners = eventListeners;
+        this.parsersList = parsersList;
     }
 
     @Bean
-    public JDA gatewayDiscordClient(List<ListenerAdapter> eventListeners, List<CrossoutdbParser> parsersList) throws LoginException, InterruptedException {
+    public JDA getJda() {
+        return jda;
+    }
+
+    @Bean
+    public JDA gatewayDiscordClient() throws LoginException, InterruptedException {
 
         JDA jda = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_EMOJIS, GatewayIntent.GUILD_PRESENCES)
                 .build()
@@ -37,7 +49,8 @@ public class BotConfiguration {
            jda.addEventListener(listener);
         }
 
-        parsersList.forEach(System.out::println);
+        eventListeners.forEach(System.out::println);
+
         return jda;
     }
 }

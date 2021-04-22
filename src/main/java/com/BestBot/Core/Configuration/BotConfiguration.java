@@ -1,5 +1,6 @@
 package com.BestBot.Core.Configuration;
 
+import com.BestBot.Core.DSMessageSender.MessageSender;
 import com.BestBot.Core.Parsers.CrossoutdbParser;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -10,32 +11,28 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.security.auth.login.LoginException;
 import java.util.List;
 
 @Configuration
 @EnableAutoConfiguration
 @PropertySource("classpath:token.properties")
+@Component
 public class BotConfiguration {
 
     private final String token;
 
     private List<ListenerAdapter> eventListeners;
 
-    private List<CrossoutdbParser> parsersList;
-
+    @Resource
     private JDA jda;
 
-    public BotConfiguration(@Value("${token}") String token, List<ListenerAdapter> eventListeners, List<CrossoutdbParser> parsersList) {
+    public BotConfiguration(@Value("${token}") String token, List<ListenerAdapter> eventListeners) {
         this.token = token;
         this.eventListeners = eventListeners;
-        this.parsersList = parsersList;
-    }
-
-    @Bean
-    public JDA getJda() {
-        return jda;
     }
 
     @Bean
@@ -48,8 +45,6 @@ public class BotConfiguration {
         for(ListenerAdapter listener : eventListeners) {
            jda.addEventListener(listener);
         }
-
-        eventListeners.forEach(System.out::println);
 
         return jda;
     }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
 import reactor.core.publisher.Flux;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -33,6 +34,7 @@ public class TestParser implements CrossoutdbParser{
 
     private JDA jda;
 
+    @Resource
     private List<ItemEntity> itemList;
 
     public TestParser(@Value("${getItemApi}") String api, ItemEntityRepository itemEntityRepositoryNew, MessageSender messageSender, JDA jda) {
@@ -49,6 +51,12 @@ public class TestParser implements CrossoutdbParser{
         testTest().stream()
                 .filter(e -> e instanceof ItemEntity)
                 .forEach(e -> itemEntityRepository.save((ItemEntity) e));
+    }
+
+    @Bean
+    @Resource
+    public List<ItemEntity> getItemList(){
+        return itemList;
     }
 
     @Override
@@ -95,11 +103,10 @@ public class TestParser implements CrossoutdbParser{
         }
         messageSender.sengMessage(jda, ("db renew COMPLETE " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
 
-        this.itemList = itemList.stream()
+        this.itemList = items.stream()
+                .map(e-> (ItemEntity)e)
                 .filter(Objects::nonNull)
                 .toList();
-
-        this.itemList.forEach(e-> System.out.println(e.getClass()));
         return items;
     }
 }

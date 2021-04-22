@@ -2,6 +2,9 @@
 
 Simple discord bot whith Crossout ingame market info
 
+ - enable autocreate tables
+ - enable auto update db state from crossutdb.com API
+
 HOWTO:
 
 1. Create token.properties in "resource" folder vith valid discord token with "token= "

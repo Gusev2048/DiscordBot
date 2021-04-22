@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -14,17 +15,31 @@ import javax.security.auth.login.LoginException;
 import java.util.List;
 
 @Configuration
+@EnableAutoConfiguration
 @PropertySource("classpath:token.properties")
 public class BotConfiguration {
 
     private final String token;
 
-    public BotConfiguration(@Value("${token}") String token) {
+    private List<ListenerAdapter> eventListeners;
+
+    private List<CrossoutdbParser> parsersList;
+
+    private JDA jda;
+
+    public BotConfiguration(@Value("${token}") String token, List<ListenerAdapter> eventListeners, List<CrossoutdbParser> parsersList) {
         this.token = token;
+        this.eventListeners = eventListeners;
+        this.parsersList = parsersList;
     }
 
     @Bean
-    public JDA gatewayDiscordClient(List<ListenerAdapter> eventListeners, List<CrossoutdbParser> parsersList) throws LoginException, InterruptedException {
+    public JDA getJda() {
+        return jda;
+    }
+
+    @Bean
+    public JDA gatewayDiscordClient() throws LoginException, InterruptedException {
 
         JDA jda = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_EMOJIS, GatewayIntent.GUILD_PRESENCES)
                 .build()
@@ -34,9 +49,7 @@ public class BotConfiguration {
            jda.addEventListener(listener);
         }
 
-        for(CrossoutdbParser parser : parsersList) {
-            System.out.println(parser.getString());
-        }
+        eventListeners.forEach(System.out::println);
 
         return jda;
     }

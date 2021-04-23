@@ -6,8 +6,10 @@ import com.BestBot.Core.Repository.ItemEntityRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.JDA;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
 import reactor.core.publisher.Flux;
@@ -23,7 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static javax.annotation.Resource.AuthenticationType.CONTAINER;
+
 @Component
+@PropertySource("classpath:token.properties")
 public class TestParser implements CrossoutdbParser{
 
     private final String api;
@@ -48,15 +53,14 @@ public class TestParser implements CrossoutdbParser{
     @Bean
     @Scheduled(fixedDelay = 300000)
     void saveEtities(){
-        testTest().stream()
-                .filter(e -> e instanceof ItemEntity)
-                .forEach(e -> itemEntityRepository.save((ItemEntity) e));
+        itemList.stream()
+                .filter(Objects::nonNull)
+                .forEach(e -> itemEntityRepository.save(e));
     }
 
     @Bean
-    @Resource
-    public List<ItemEntity> getItemList(){
-        return itemList;
+    public List<ItemEntity> getItemList(List<ItemEntity> otheritemList){
+        return otheritemList;
     }
 
     @Override
@@ -75,13 +79,14 @@ public class TestParser implements CrossoutdbParser{
         return new String(chars, StandardCharsets.UTF_8);
     }
 
-    public List<Object> testTest(){
+    @Bean
+    public void testTest(@Value("&{botType}")String botType){
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeAll;
 
-        List<Object> items = new ArrayList<>();
+        List<ItemEntity> itemList = new ArrayList<>();
 
-        messageSender.sengMessage(jda, ("db renew START " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
+        messageSender.sengMessage(jda, (botType + " db renew START " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
         try{
             jsonNodeAll = objectMapper.readTree(readFromApi());
             Flux.fromIterable(jsonNodeAll)
@@ -97,16 +102,13 @@ public class TestParser implements CrossoutdbParser{
                                 return e;
                             }
                     )
-                    .subscribe(items::add);
+                    .subscribe(itemList::add);
         }catch (Exception e){
-            messageSender.sengMessage(jda, ("db renew ERROR " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
+            messageSender.sengMessage(jda, (botType + " db renew ERROR " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
         }
-        messageSender.sengMessage(jda, ("db renew COMPLETE " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
+        messageSender.sengMessage(jda, (botType + " db renew COMPLETE " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
 
-        this.itemList = items.stream()
-                .map(e-> (ItemEntity)e)
-                .filter(Objects::nonNull)
-                .toList();
-        return items;
+        this.itemList = itemList;
+//        return itemList;
     }
 }

@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-core</artifactId>
-			<version>${reactor.version}</version>
+			<version>3.4.5</version>
 
 		</dependency>
 
@@ -109,7 +109,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${parent.version}</version>
 			</plugin>
 		</plugins>
 	</build>

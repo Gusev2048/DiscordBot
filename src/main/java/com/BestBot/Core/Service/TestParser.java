@@ -4,6 +4,7 @@ import com.BestBot.Core.Entity.ItemEntity;
 import com.BestBot.Core.Repository.ItemEntityRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -31,7 +33,6 @@ public class TestParser implements CrossoutdbParser{
     private final String botType;
     private MessageSender messageSender;
     private ItemEntityRepository itemEntityRepository;
-
     private List<ItemEntity> itemList;
 
     public TestParser(@Value("${getItemApi}") String api, @Value("${botType}") String botType, ItemEntityRepository itemEntityRepositoryNew, MessageSender messageSender) {
@@ -59,7 +60,7 @@ public class TestParser implements CrossoutdbParser{
 
     @Bean
     @Scheduled(fixedDelay = 300000)
-    public List<ItemEntity> testTest(){
+    public void testTest(){
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeAll;
 
@@ -74,10 +75,11 @@ public class TestParser implements CrossoutdbParser{
                                 e.setId(jsonNode.get("id").asLong());
                                 e.setName(jsonNode.get("name").asText());
                                 e.setCategory(jsonNode.get("categoryName").asText());
-                                e.setSellPrice(jsonNode.get("sellPrice").asInt());
-                                e.setBuyPrice(jsonNode.get("buyPrice").asInt());
+                                e.setSellPrice(jsonNode.get("sellPrice").asDouble());
+                                e.setBuyPrice(jsonNode.get("buyPrice").asDouble());
                                 e.setSellOffers(jsonNode.get("sellOffers").asInt());
                                 e.setBuyOrders(jsonNode.get("buyOrders").asInt());
+                                e.setLastUpdateTime(jsonNode.get("timestamp").asText());
                                 return e;
                             }
                     )
@@ -91,6 +93,9 @@ public class TestParser implements CrossoutdbParser{
                 .filter(Objects::nonNull)
                 .forEach(e -> itemEntityRepository.save(e));
         this.itemList = itemList;
-        return itemList;
+    }
+
+    public List<ItemEntity> getItemList(){
+        return this.itemList;
     }
 }

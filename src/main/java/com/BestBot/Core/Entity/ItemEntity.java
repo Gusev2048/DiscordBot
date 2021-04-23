@@ -1,8 +1,6 @@
 package com.BestBot.Core.Entity;
 
-import com.BestBot.Core.Repository.ItemEntityRepository;
 import lombok.Data;
-import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
 
@@ -15,10 +13,11 @@ public class ItemEntity {
     private Long id;
     private String name;
     private String Category;
-    private int sellPrice;
-    private int buyPrice;
+    private double sellPrice;
+    private double buyPrice;
     private int sellOffers;
     private int buyOrders;
+    private String lastUpdateTime;
 
     public ItemEntity() {
     }

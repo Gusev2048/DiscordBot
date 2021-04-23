@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,7 @@ import java.util.List;
 public class BotConfiguration {
 
     private final String token;
-
-    private List<ListenerAdapter> eventListeners;
+    private final List<ListenerAdapter> eventListeners;
 
     public BotConfiguration(@Value("${token}") String token, List<ListenerAdapter> eventListeners) {
         this.token = token;
@@ -27,15 +27,18 @@ public class BotConfiguration {
     }
 
     @Bean
-    public JDA gatewayDiscordClient() throws LoginException, InterruptedException {
-
-        JDA jda = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_EMOJIS, GatewayIntent.GUILD_PRESENCES)
+    public JDA getNewJDA() throws LoginException, InterruptedException {
+        return JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_EMOJIS, GatewayIntent.GUILD_PRESENCES)
                 .build()
                 .awaitReady();
+    }
 
-        for(ListenerAdapter listener : eventListeners) {
-           jda.addEventListener(listener);
-        }
-        return jda;
+    @Bean
+    ApplicationRunner listenersAdder(JDA jda){
+        return args -> {
+            for(ListenerAdapter listener : eventListeners) {
+                jda.addEventListener(listener);
+            }
+        };
     }
 }

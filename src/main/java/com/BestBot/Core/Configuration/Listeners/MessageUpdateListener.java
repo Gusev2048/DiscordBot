@@ -1,4 +1,4 @@
-package com.BestBot.Core.Listeners;
+package com.BestBot.Core.Configuration.Listeners;
 
 import org.springframework.stereotype.Service;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;

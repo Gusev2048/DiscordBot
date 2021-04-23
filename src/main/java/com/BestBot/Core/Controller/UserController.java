@@ -1,8 +1,6 @@
 package com.BestBot.Core.Controller;
 
 import com.BestBot.Core.Entity.ItemEntity;
-import com.BestBot.Core.Parsers.TestParser;
-import com.BestBot.Core.Repository.ItemEntityRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

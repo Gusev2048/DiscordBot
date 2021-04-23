@@ -1,20 +1,17 @@
-package com.BestBot.Core.Parsers;
+package com.BestBot.Core.Service;
 
-import com.BestBot.Core.DSMessageSender.MessageSender;
 import com.BestBot.Core.Entity.ItemEntity;
 import com.BestBot.Core.Repository.ItemEntityRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.dv8tion.jda.api.JDA;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -25,42 +22,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static javax.annotation.Resource.AuthenticationType.CONTAINER;
-
-@Component
+@Service
+@EnableAutoConfiguration
 @PropertySource("classpath:token.properties")
 public class TestParser implements CrossoutdbParser{
 
     private final String api;
-
+    private final String botType;
     private MessageSender messageSender;
-
     private ItemEntityRepository itemEntityRepository;
 
-    private JDA jda;
-
-    @Resource
     private List<ItemEntity> itemList;
 
-    public TestParser(@Value("${getItemApi}") String api, ItemEntityRepository itemEntityRepositoryNew, MessageSender messageSender, JDA jda) {
+    public TestParser(@Value("${getItemApi}") String api, @Value("${botType}") String botType, ItemEntityRepository itemEntityRepositoryNew, MessageSender messageSender) {
         this.api = api;
         this.itemEntityRepository = itemEntityRepositoryNew;
         this.messageSender = messageSender;
-        this.jda = jda;
-        this.itemList = new ArrayList<>();
-    }
-
-    @Bean
-    @Scheduled(fixedDelay = 300000)
-    void saveEtities(){
-        itemList.stream()
-                .filter(Objects::nonNull)
-                .forEach(e -> itemEntityRepository.save(e));
-    }
-
-    @Bean
-    public List<ItemEntity> getItemList(List<ItemEntity> otheritemList){
-        return otheritemList;
+        this.botType = botType;
     }
 
     @Override
@@ -80,13 +58,14 @@ public class TestParser implements CrossoutdbParser{
     }
 
     @Bean
-    public void testTest(@Value("&{botType}")String botType){
+    @Scheduled(fixedDelay = 300000)
+    public List<ItemEntity> testTest(){
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNodeAll;
 
         List<ItemEntity> itemList = new ArrayList<>();
 
-        messageSender.sengMessage(jda, (botType + " db renew START " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
+        messageSender.sengMessage((botType + " db renew START " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
         try{
             jsonNodeAll = objectMapper.readTree(readFromApi());
             Flux.fromIterable(jsonNodeAll)
@@ -104,11 +83,14 @@ public class TestParser implements CrossoutdbParser{
                     )
                     .subscribe(itemList::add);
         }catch (Exception e){
-            messageSender.sengMessage(jda, (botType + " db renew ERROR " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
+            messageSender.sengMessage((botType + " db renew ERROR " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
         }
-        messageSender.sengMessage(jda, (botType + " db renew COMPLETE " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
+        messageSender.sengMessage((botType + " db renew COMPLETE " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
 
+        itemList.stream()
+                .filter(Objects::nonNull)
+                .forEach(e -> itemEntityRepository.save(e));
         this.itemList = itemList;
-//        return itemList;
+        return itemList;
     }
 }

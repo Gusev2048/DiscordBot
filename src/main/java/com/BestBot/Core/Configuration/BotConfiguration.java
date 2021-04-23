@@ -1,7 +1,5 @@
 package com.BestBot.Core.Configuration;
 
-import com.BestBot.Core.DSMessageSender.MessageSender;
-import com.BestBot.Core.Parsers.CrossoutdbParser;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,24 +9,17 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 import javax.security.auth.login.LoginException;
 import java.util.List;
 
 @Configuration
 @EnableAutoConfiguration
 @PropertySource("classpath:token.properties")
-@Component
 public class BotConfiguration {
 
     private final String token;
 
     private List<ListenerAdapter> eventListeners;
-
-    @Resource
-    private JDA jda;
 
     public BotConfiguration(@Value("${token}") String token, List<ListenerAdapter> eventListeners) {
         this.token = token;
@@ -45,7 +36,6 @@ public class BotConfiguration {
         for(ListenerAdapter listener : eventListeners) {
            jda.addEventListener(listener);
         }
-
         return jda;
     }
 }

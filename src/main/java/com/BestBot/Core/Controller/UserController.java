@@ -1,32 +1,33 @@
 package com.BestBot.Core.Controller;
 
-import com.BestBot.Core.Entity.ItemEntity;
-import org.springframework.beans.factory.annotation.Value;
+import com.BestBot.Core.Service.TestParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@Component
 @RequestMapping("/users")
 public class UserController {
-    @Value("${getItemApi}")
-    private String api;
 
-    private List<ItemEntity> itemList;
+    private TestParser testParser;
 
-    @GetMapping("/")
-    public ResponseEntity getUsers(List<ItemEntity> itemList){
-        String string = itemList.get(0).toString();
+    @Autowired
+    private void setTestParser (TestParser testParser){
+        this.testParser = testParser;
+    }
 
+    @GetMapping("/get0")
+    public ResponseEntity getUsers(){
         try{
-            return ResponseEntity.ok(string);
+            return ResponseEntity.ok(getString());
         }catch (Exception e){
             return ResponseEntity.badRequest().body("error");
         }
+    }
+
+    private String getString(){
+        return testParser.getItemList().get(27).toString();
     }
 }

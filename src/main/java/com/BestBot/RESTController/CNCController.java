@@ -27,13 +27,14 @@ public class CNCController {
 
     public CNCController(MessageSenderJDA messageSenderJDA) {
         this.messageSenderJDA = messageSenderJDA;
-        this.newCNCUrl = "http://12762ff42aa5.ngrok.io/";
+        this.newCNCUrl = "http://localhost:8085/skynet/set0";
     }
 
     public void sendToCNC(String channelId, String message){
+
         CloseableHttpClient client = HttpClients.createDefault();
 
-        HttpPost post = new HttpPost(newCNCUrl != null ? newCNCUrl : "http://12762ff42aa5.ngrok.io/");
+        HttpPost post = new HttpPost(newCNCUrl);
 
         String encodedStr = Base64.getEncoder().encodeToString(message.getBytes(StandardCharsets.UTF_8));
 
@@ -44,15 +45,15 @@ public class CNCController {
         }catch (IOException e){
             e.printStackTrace();
         }
-    }
+}
 
     @PostMapping(path = "/skynet/set0")
     public void getData(@RequestBody String string) {
-
-        messageSenderJDA.getJDA()
-                .getTextChannelById("834814097157390377")
-                .sendMessage("reseived to/set0 " + string)
-                .queue();
+//        //TODO: delete this.
+//        messageSenderJDA.getJDA()
+//                .getTextChannelById("834814097157390377")
+//                .sendMessage("reseived to/set0 " + string)
+//                .queue();
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = null;
@@ -69,14 +70,15 @@ public class CNCController {
                 .sendMessage(response)
                 .queue();
     }
+
     @PostMapping(path = "/skynet/setNewCNCUrl")
     public void setNewCNCUrl(@RequestBody String string) {
-
-        messageSenderJDA.getJDA()
-                .getTextChannelById("834814097157390377")
-                .sendMessage("reseived to new url " + string)
-                .queue();
-
+//        //TODO: delete this.
+//        messageSenderJDA.getJDA()
+//                .getTextChannelById("834814097157390377")
+//                .sendMessage("reseived to new url " + string)
+//                .queue();
+//
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = null;
         try {

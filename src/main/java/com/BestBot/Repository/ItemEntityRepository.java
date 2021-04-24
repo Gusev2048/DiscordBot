@@ -1,6 +1,6 @@
-package com.BestBot.Core.Repository;
+package com.BestBot.Repository;
 
-import com.BestBot.Core.Entity.ItemEntity;
+import com.BestBot.Entity.ItemEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

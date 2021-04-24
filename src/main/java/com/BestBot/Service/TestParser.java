@@ -1,10 +1,9 @@
-package com.BestBot.Core.Service;
+package com.BestBot.Service;
 
-import com.BestBot.Core.Entity.ItemEntity;
-import com.BestBot.Core.Repository.ItemEntityRepository;
+import com.BestBot.Entity.ItemEntity;
+import com.BestBot.Repository.ItemEntityRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package com.BestBot.Core.Entity;
+package com.BestBot.Entity;
 
 import lombok.Data;
 

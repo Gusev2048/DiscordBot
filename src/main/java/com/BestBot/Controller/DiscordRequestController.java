@@ -1,7 +1,7 @@
-package com.BestBot.Core.Controller;
+package com.BestBot.Controller;
 
-import com.BestBot.Core.Service.MessageSender;
-import com.BestBot.Core.Service.TestParser;
+import com.BestBot.Service.MessageSender;
+import com.BestBot.Service.TestParser;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

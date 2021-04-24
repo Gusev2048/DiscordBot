@@ -1,4 +1,4 @@
-package com.BestBot.Core.Configuration;
+package com.BestBot.ConfigDiscord;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -16,12 +16,12 @@ import java.util.List;
 @Configuration
 @EnableAutoConfiguration
 @PropertySource("classpath:token.properties")
-public class BotConfiguration {
+public class ConfigJDA {
 
     private final String token;
     private final List<ListenerAdapter> eventListeners;
 
-    public BotConfiguration(@Value("${token}") String token, List<ListenerAdapter> eventListeners) {
+    public ConfigJDA(@Value("${token}") String token, List<ListenerAdapter> eventListeners) {
         this.token = token;
         this.eventListeners = eventListeners;
     }

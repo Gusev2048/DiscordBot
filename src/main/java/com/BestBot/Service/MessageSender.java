@@ -1,4 +1,4 @@
-package com.BestBot.Core.Service;
+package com.BestBot.Service;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;

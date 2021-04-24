@@ -1,4 +1,4 @@
-package com.BestBot.Core.Service;
+package com.BestBot.Service;
 
 import org.springframework.stereotype.Service;
 
@@ -9,6 +9,4 @@ public class discordCommandExecutor {
 
     private List<String> commandList;
     private String inputCommand;
-
-
 }

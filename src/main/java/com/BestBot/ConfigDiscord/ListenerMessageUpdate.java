@@ -1,6 +1,6 @@
-package com.BestBot.Core.Configuration.Listeners;
+package com.BestBot.ConfigDiscord;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class MessageCreateListener extends ListenerAdapter {
+public class ListenerMessageUpdate extends ListenerAdapter {
 
     @Value("${parol}")
     private String parol;
@@ -17,12 +17,12 @@ public class MessageCreateListener extends ListenerAdapter {
     private String otzuv;
 
     @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent eventMessage) {
+    public void onMessageUpdate(@NotNull MessageUpdateEvent eventMessage) {
 
        Mono.just(eventMessage)
                 .filter(message -> !message.getAuthor().isBot())
                 .filter(event -> event.getMessage().getContentDisplay().equalsIgnoreCase(parol))
-                .map(MessageReceivedEvent::getChannel)
+                .map(MessageUpdateEvent::getChannel)
                 .map(channel -> channel.sendMessage(otzuv))
                 .subscribe(MessageAction::queue);
     }

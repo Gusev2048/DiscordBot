@@ -1,4 +1,4 @@
-package com.BestBot.Core.Service;
+package com.BestBot.Service;
 
 public interface CrossoutdbParser {
     String getApi();

@@ -29,14 +29,12 @@ public class TestParser implements CrossoutdbParser{
 
     private final String api;
     private final String botType;
-    private MessageSender messageSender;
     private ItemEntityRepository itemEntityRepository;
     private List<ItemEntity> itemList;
 
-    public TestParser(@Value("${getItemApi}") String api, @Value("${botType}") String botType, ItemEntityRepository itemEntityRepositoryNew, MessageSender messageSender) {
+    public TestParser(@Value("${getItemApi}") String api, @Value("${botType}") String botType, ItemEntityRepository itemEntityRepositoryNew) {
         this.api = api;
         this.itemEntityRepository = itemEntityRepositoryNew;
-        this.messageSender = messageSender;
         this.botType = botType;
     }
 
@@ -64,7 +62,6 @@ public class TestParser implements CrossoutdbParser{
 
         List<ItemEntity> itemList = new ArrayList<>();
 
-        messageSender.sengMessage((botType + " db renew START " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
         try{
             jsonNodeAll = objectMapper.readTree(readFromApi());
             Flux.fromIterable(jsonNodeAll)
@@ -83,16 +80,13 @@ public class TestParser implements CrossoutdbParser{
                     )
                     .subscribe(itemList::add);
         }catch (Exception e){
-            messageSender.sengMessage((botType + " db renew ERROR " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
         }
-        messageSender.sengMessage((botType + " db renew COMPLETE " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH.mm.ss.AAAA"))));
 
         itemList.stream()
                 .filter(Objects::nonNull)
                 .forEach(e -> itemEntityRepository.save(e));
         this.itemList = itemList;
     }
-
     public List<ItemEntity> getItemList(){
         return this.itemList;
     }

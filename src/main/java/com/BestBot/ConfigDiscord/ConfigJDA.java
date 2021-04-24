@@ -39,6 +39,7 @@ public class ConfigJDA {
             for(ListenerAdapter listener : eventListeners) {
                 jda.addEventListener(listener);
             }
+//            System.out.println(jda.getRegisteredListeners());
         };
     }
 }

@@ -26,12 +26,13 @@ public class ListenerMessageCreate extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent eventMessage) {
-
        Mono.just(eventMessage)
                 .filter(message -> !message.getAuthor().isBot())
                 .filter(event -> event.getMessage().getContentDisplay().startsWith(prefix))
-                .map(MessageReceivedEvent::getChannel)
-                .map(channel -> channel.sendMessage(discordCommandExecutor.getResponse(eventMessage.getMessage().getContentDisplay().substring(1))))
-                .subscribe(MessageAction::queue);
+//                .map(MessageReceivedEvent::getChannel)
+//                .map(channel -> channel.sendMessage(discordCommandExecutor.getResponse(eventMessage.getMessage().getContentDisplay().substring(1))))
+//               .checkpoint("ololo", true)
+               .subscribe(event -> discordCommandExecutor.setCommand(event));
+//        System.out.println(eventMessage);
     }
 }

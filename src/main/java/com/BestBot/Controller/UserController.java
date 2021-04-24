@@ -32,6 +32,6 @@ public class UserController {
     }
 
     private String getString(){
-        return testParser.getItemList().get(27).toString();
+        return testParser.getItems().get(27).toString();
     }
 }

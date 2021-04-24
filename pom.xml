@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>com.BestBot</groupId>
 	<artifactId>TheBot</artifactId>
-	<version>0.1</version>
-	<name>demo</name>
+	<version>0.2</version>
+	<name>demoBot</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>16</java.version>
@@ -64,7 +64,6 @@
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-core</artifactId>
 			<version>3.4.5</version>
-
 		</dependency>
 
 		<dependency>
@@ -112,5 +111,15 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>ssh-repository</id>
+			<name>ovz</name>
+			<url>http://ololo/usr/TheBot</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
 
 </project>

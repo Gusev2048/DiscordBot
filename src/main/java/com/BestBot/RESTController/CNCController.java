@@ -3,11 +3,13 @@ package com.BestBot.RESTController;
 import com.BestBot.ConfigDiscord.MessageSenderJDA;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,13 +35,16 @@ public class CNCController {
     public void sendToCNC(String channelId, String message){
 
         CloseableHttpClient client = HttpClients.createDefault();
-
         HttpPost post = new HttpPost(newCNCUrl);
-
         String encodedStr = Base64.getEncoder().encodeToString(message.getBytes(StandardCharsets.UTF_8));
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode objectNode = objectMapper.createObjectNode()
+                .put("channelID", channelId)
+                .put("messageBody", encodedStr);
+
         try{
-            post.setEntity(new StringEntity("{\"channelID\":\"" + channelId + "\",\"messageBody\":\"" + encodedStr + "\"}"));
+            post.setEntity(new StringEntity(objectNode.toString()));
             CloseableHttpResponse response = client.execute(post);
             response.close();
         }catch (IOException e){
@@ -49,11 +54,6 @@ public class CNCController {
 
     @PostMapping(path = "/skynet/set0")
     public void getData(@RequestBody String string) {
-//        //TODO: delete this.
-//        messageSenderJDA.getJDA()
-//                .getTextChannelById("834814097157390377")
-//                .sendMessage("reseived to/set0 " + string)
-//                .queue();
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = null;
@@ -73,12 +73,7 @@ public class CNCController {
 
     @PostMapping(path = "/skynet/setNewCNCUrl")
     public void setNewCNCUrl(@RequestBody String string) {
-//        //TODO: delete this.
-//        messageSenderJDA.getJDA()
-//                .getTextChannelById("834814097157390377")
-//                .sendMessage("reseived to new url " + string)
-//                .queue();
-//
+
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = null;
         try {

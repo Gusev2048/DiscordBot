@@ -16,10 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @EnableAutoConfiguration
@@ -75,6 +72,8 @@ public class TestParser implements CrossoutdbParser{
                                 e.setSellOffers(jsonNode.get("sellOffers").asInt());
                                 e.setBuyOrders(jsonNode.get("buyOrders").asInt());
                                 e.setLastUpdateTime(jsonNode.get("timestamp").asText());
+                                e.setRarity(jsonNode.get("rarityName").asText());
+                                e.setRarityId(jsonNode.get("rarityId").asText());
                                 return e;
                             }
                     )

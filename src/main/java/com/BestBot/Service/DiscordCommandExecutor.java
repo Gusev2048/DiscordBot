@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @PropertySource("classpath:commands.properties")
@@ -22,23 +24,33 @@ public class DiscordCommandExecutor {
     @Value("${secondCommand}")
     private String secondCommand;
 
+    Map<String, Color> colorMap;
+
     private TestParser testParser;
-    private MessageSender messageSender;
     private CNCController cncController;
 
-    public DiscordCommandExecutor(TestParser testParser, MessageSender messageSender, CNCController cncController) {
+    public DiscordCommandExecutor(TestParser testParser, CNCController cncController) {
         this.testParser = testParser;
-        this.messageSender = messageSender;
         this.cncController = cncController;
+        this.colorMap = new HashMap<>();
+
+        colorMap.put("1", Color.decode("#FFFAFA"));
+        colorMap.put("2", Color.BLUE);
+        colorMap.put("6", Color.CYAN);
+        colorMap.put("3", Color.MAGENTA);
+        colorMap.put("4", Color.YELLOW);
+        colorMap.put("5", Color.orange);
     }
 
     public void buildMessage(TextChannel textChannel, ItemEntity itemEntity){
 
         EmbedBuilder builder = new EmbedBuilder();
-        textChannel.sendMessage(builder.setTitle(itemEntity.getName() + " " + itemEntity.getCategory())
-                            .setColor(Color.CYAN)
-                            .addField("ololoFieldName", itemEntity.toString(), true)
-                            .setFooter(itemEntity.getLastUpdateTime())
+        textChannel.sendMessage(builder.setTitle(itemEntity.getName())
+                            .setColor(colorMap.get(itemEntity.getRarityId()))
+                            .addField("Category: " + itemEntity.getCategory() + ". Rarity: " + itemEntity.getRarity(), "", false)
+                            .addField("Sell price: " + itemEntity.getSellPrice()/100, "Sell offers: " + itemEntity.getSellOffers(), true)
+                            .addField("Buy price: " + itemEntity.getBuyPrice()/100, "Buy offers: " + itemEntity.getBuyOrders(), true)
+                            .setFooter("Updated: " + itemEntity.getLastUpdateTime())
                             .build()).queue();
     }
 

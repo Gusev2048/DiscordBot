@@ -26,7 +26,7 @@ Active command list (command prefix is ";"):
      example: ;item scorp
  - itemlist "item category" "item rarity" - show list of items from selected category with selected rarity
  - 
-     example: ;item weapon legendary
+     example: ;itemlist weapon legendary
  - skynet - this is test feature. This command send all text after to remote server with 
     neural network developed with Python 3 and show you it's response.
     

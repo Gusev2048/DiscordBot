@@ -12,45 +12,75 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
-@PropertySource("classpath:commands.properties")
 public class DiscordCommandExecutor {
 
-    @Value("${firstCommand}")
-    private String firstCommand;
-    @Value("${secondCommand}")
-    private String secondCommand;
+    Map<String, Color> colorMap;
 
     private TestParser testParser;
-    private MessageSender messageSender;
     private CNCController cncController;
+    private EntityFinder entityFinder;
 
-    public DiscordCommandExecutor(TestParser testParser, MessageSender messageSender, CNCController cncController) {
+    public DiscordCommandExecutor(TestParser testParser, CNCController cncController, EntityFinder entityFinder1) {
         this.testParser = testParser;
-        this.messageSender = messageSender;
         this.cncController = cncController;
+        this.entityFinder = entityFinder1;
+        this.colorMap = new HashMap<>();
+
+        colorMap.put("1", Color.decode("#FFFAFA"));
+        colorMap.put("2", Color.BLUE);
+        colorMap.put("6", Color.CYAN);
+        colorMap.put("3", Color.MAGENTA);
+        colorMap.put("4", Color.decode("#ffd700"));
+        colorMap.put("5", Color.decode("#FF9000"));
     }
 
     public void buildMessage(TextChannel textChannel, ItemEntity itemEntity){
 
         EmbedBuilder builder = new EmbedBuilder();
-        textChannel.sendMessage(builder.setTitle(itemEntity.getName() + " " + itemEntity.getCategory())
-                            .setColor(Color.CYAN)
-                            .addField("ololoFieldName", itemEntity.toString(), true)
-                            .setFooter(itemEntity.getLastUpdateTime())
+        textChannel.sendMessage(builder.setTitle(itemEntity.getName())
+                            .setColor(colorMap.get(itemEntity.getRarityId()))
+                            .addField("Category: " + itemEntity.getCategory() + ". Rarity: " + itemEntity.getRarity(), "", false)
+                            .addField("Sell price: " + itemEntity.getSellPrice()/100, "Sell offers: " + itemEntity.getSellOffers(), true)
+                            .addField("Buy price: " + itemEntity.getBuyPrice()/100, "Buy offers: " + itemEntity.getBuyOrders(), true)
+                            .setFooter("Updated: " + itemEntity.getLastUpdateTime())
                             .build()).queue();
+    }
+
+    public void buildMessageAll(TextChannel textChannel, String string){
+
+        EmbedBuilder builder = new EmbedBuilder();
+        textChannel.sendMessage(builder.setTitle("All items for category:")
+                .setColor(colorMap.get(Color.RED))
+                .addField("", string, true)
+                .build()).queue();
     }
 
     public void setCommand(MessageReceivedEvent event) {
         TextChannel textChannel = event.getTextChannel();
         Message message = event.getMessage();
 
-        switch (event.getMessage().getContentDisplay().split(" ")[0]) {
-            case ";item" -> Mono.just(message.getContentDisplay().split(" "))
-                    .subscribe(e -> buildMessage(textChannel, testParser.getItems().get(e[1])));
-            case ";skynet" -> Mono.just(message.getContentDisplay().split(" "))
-                    .subscribe(e -> cncController.sendToCNC(textChannel.getId(), message.getContentDisplay().replace(";skynet ", "")));
+        switch (event.getMessage().getContentDisplay().split(" ")[0].toLowerCase()) {
+            case ";item" -> {
+                Mono.just(message.getContentDisplay().split(" "))
+                        .subscribe(e -> buildMessage(textChannel, entityFinder.getItemEntity(e[1]).isPresent() ? entityFinder.getItemEntity(e[1]).get() : testParser.getItems().get("Hurricane")));
+            }
+            case ";skynet" -> {
+                Mono.just(message.getContentDisplay().split(" "))
+                        .subscribe(e -> cncController.sendToCNC(textChannel.getId(), message.getContentDisplay().replace(";skynet ", "")));
+            }
+            case ";itemlist" -> {
+
+                Mono.just(message.getContentDisplay().split(" "))
+                        .subscribe(e -> buildMessageAll(textChannel, entityFinder.getCategoryItems(e[1]).isPresent() ? entityFinder.getCategoryItems(e[1]).get().stream()
+                                                                                                                                    .filter(r -> r.getRarity().toLowerCase().contains(e[2].toLowerCase()))
+                                                                                                                                    .map(ItemEntity::getName)
+                                                                                                                                    .collect(Collectors.joining("\n")) : "No such category("));
+            }
         }
     }
 }

@@ -18,6 +18,8 @@ public class ItemEntity {
     private int sellOffers;
     private int buyOrders;
     private String lastUpdateTime;
+    private String rarityId;
+    private String rarity;
 
     public ItemEntity() {
     }

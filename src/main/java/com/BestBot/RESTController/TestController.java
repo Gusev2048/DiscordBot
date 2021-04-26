@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/test")
 public class TestController {
 
     private TestParser testParser;
@@ -20,18 +21,18 @@ public class TestController {
     @GetMapping("/get0")
     public ResponseEntity getUsers(){
         try{
-            return ResponseEntity.ok(getString());
+            return ResponseEntity.ok(getString("27"));
         }catch (Exception e){
             return ResponseEntity.badRequest().body("error");
         }
     }
 
-    @PostMapping(path = "/set0", produces = MediaType.APPLICATION_XML_VALUE)
+    @PostMapping(path = "/set0")
     public void getData(@RequestBody String string) {
         System.out.println(string);
     }
 
-    private String getString(){
-        return testParser.getItems().get(27).toString();
+    private String getString(String id){
+        return testParser.getItems().get(id).toString();
     }
 }

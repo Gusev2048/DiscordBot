@@ -87,7 +87,7 @@ public class TestParser implements CrossoutdbParser{
                 .forEach(e -> itemEntityRepository.save(e));
 
         Flux.fromIterable(itemList)
-                             .subscribe(itemEntity -> items.put(itemEntity.getId().toString(), itemEntity));
+                             .subscribe(itemEntity -> items.put(itemEntity.getName().toLowerCase(), itemEntity));
     }
 
     public Map<String, ItemEntity> getItems(){

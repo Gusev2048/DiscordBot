@@ -28,18 +28,20 @@ public class DiscordCommandExecutor {
 
     private TestParser testParser;
     private CNCController cncController;
+    private EntityFinder entityFinder;
 
-    public DiscordCommandExecutor(TestParser testParser, CNCController cncController) {
+    public DiscordCommandExecutor(TestParser testParser, CNCController cncController, EntityFinder entityFinder1) {
         this.testParser = testParser;
         this.cncController = cncController;
+        this.entityFinder = entityFinder1;
         this.colorMap = new HashMap<>();
 
         colorMap.put("1", Color.decode("#FFFAFA"));
         colorMap.put("2", Color.BLUE);
         colorMap.put("6", Color.CYAN);
         colorMap.put("3", Color.MAGENTA);
-        colorMap.put("4", Color.YELLOW);
-        colorMap.put("5", Color.orange);
+        colorMap.put("4", Color.decode("#ffd700"));
+        colorMap.put("5", Color.decode("#FF9000"));
     }
 
     public void buildMessage(TextChannel textChannel, ItemEntity itemEntity){
@@ -59,10 +61,14 @@ public class DiscordCommandExecutor {
         Message message = event.getMessage();
 
         switch (event.getMessage().getContentDisplay().split(" ")[0]) {
-            case ";item" -> Mono.just(message.getContentDisplay().split(" "))
-                    .subscribe(e -> buildMessage(textChannel, testParser.getItems().get(e[1])));
-            case ";skynet" -> Mono.just(message.getContentDisplay().split(" "))
-                    .subscribe(e -> cncController.sendToCNC(textChannel.getId(), message.getContentDisplay().replace(";skynet ", "")));
+            case ";item" -> {
+                Mono.just(message.getContentDisplay().split(" "))
+                        .subscribe(e -> buildMessage(textChannel, entityFinder.getItemEntity(e[1]).isPresent() ? entityFinder.getItemEntity(e[1]).get() : testParser.getItems().get("Hurricane")));
+            }
+            case ";skynet" -> {
+                Mono.just(message.getContentDisplay().split(" "))
+                        .subscribe(e -> cncController.sendToCNC(textChannel.getId(), message.getContentDisplay().replace(";skynet ", "")));
+            }
         }
     }
 }

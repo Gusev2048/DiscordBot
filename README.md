@@ -39,7 +39,9 @@ Active command list (command prefix is ";"):
     
   In the next updates:
    - microservices. Powered by Docker.
-   - 
+   - JUnit
+   - SLF4J
+   - other interesting things
     
     
     

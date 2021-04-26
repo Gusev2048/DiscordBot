@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DiscordCommandExecutor {
@@ -66,8 +69,11 @@ public class DiscordCommandExecutor {
 
         switch (event.getMessage().getContentDisplay().split(" ")[0].toLowerCase()) {
             case ";item" -> {
+
                 Mono.just(message.getContentDisplay().split(" "))
-                        .subscribe(e -> buildMessage(textChannel, entityFinder.getItemEntity(e[1]).isPresent() ? entityFinder.getItemEntity(e[1]).get() : testParser.getItems().get("Hurricane")));
+                        .subscribe(e -> buildMessage(textChannel, entityFinder.getItemEntity(String.join(" ", Arrays.copyOfRange(e, 1, e.length))).isPresent() ? entityFinder.getItemEntity(e[1]).get() : testParser.getItems().get("Hurricane")));
+//TODO: выпилить. Разобраться почему не ищет fat man
+                System.out.println(String.join(" ", Arrays.copyOfRange(message.getContentDisplay().split(" "), 1, message.getContentDisplay().split(" ").length)));
             }
             case ";skynet" -> {
                 Mono.just(message.getContentDisplay().split(" "))

@@ -7,7 +7,7 @@ Simple discord bot whith Crossout ingame market info
 
 HOWTO:
 
-1. Configuration of .properties changes frequently, so I have no ideas how I can put sample here.
+1. Configuration of .properties changes frequently, so I have no idea how I can put sample here without unvalidate things..
 2. Build with mvn clean install
 3. Create PostgreSQL database from application property
 4. Run .jar

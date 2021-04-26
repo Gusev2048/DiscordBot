@@ -37,5 +37,10 @@ Active command list (command prefix is ";"):
     P.S. neural network trained in Shakespeare's
     
     
+  In the next updates:
+   - microservices. Powered by Docker.
+   - 
+    
+    
     
     

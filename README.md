@@ -32,3 +32,5 @@ Active command list (command prefix is ";"):
     example: ;skynet who are you?
     
     Unfortunately neural network develop in progress, so you may not get the answer to "The Ultimate Question of Life, the Universe, and Everything".
+    
+    P.S. neural network trained in Shakespeare's

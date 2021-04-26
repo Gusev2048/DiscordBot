@@ -5,7 +5,7 @@ Simple discord bot whith Crossout ingame market info
  - developed with Spring boot
  - Hibernate & PostgreSQL included
  - REST services - online
- - Stream API, project Reactor etc
+ - Stream API, project Reactor, Jackson etc
 
 HOWTO:
 
@@ -35,3 +35,7 @@ Active command list (command prefix is ";"):
     Unfortunately neural network develop in progress, so you may not get the answer to "The Ultimate Question of Life, the Universe, and Everything".
     
     P.S. neural network trained in Shakespeare's
+    
+    
+    
+    

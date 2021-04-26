@@ -21,10 +21,14 @@ You can check it with discord:
 Active command list (command prefix is ";"):
  
  - item "item name" - show short description of item from https://crossoutdb.com/api/v1/items
+ - 
      example: ;item scorp
  - itemlist "item category" "item rarity" - show list of items from selected category with selected rarity
+ - 
      example: ;item weapon legendary
  - skynet - this is test feature. This command send all text after to remote server with 
     neural network developed with Python 3 and show you it's response.
+    
     example: ;skynet who are you?
+    
     Unfortunately neural network develop in progress, so you may not get the answer to "The Ultimate Question of Life, the Universe, and Everything".

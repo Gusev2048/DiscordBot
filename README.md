@@ -18,7 +18,7 @@ Bot online about 24/7
 You can check it with discord:
     https://discord.gg/XdRpYnduTb
     
-Active command (command prefix is ";"):
+Active command list (command prefix is ";"):
  
  - item "item name" - show short description of item from https://crossoutdb.com/api/v1/items
      example: ;item scorp

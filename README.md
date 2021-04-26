@@ -5,7 +5,7 @@ Simple discord bot whith Crossout ingame market info
  - developed with Spring boot
  - Hibernate & PostgreSQL included
  - REST services - online
- - Streams API, project Reactor etc
+ - Stream API, project Reactor etc
 
 HOWTO:
 

@@ -37,7 +37,7 @@ Active command list (command prefix is ";"):
     P.S. neural network trained in Shakespeare's
     
     
-  In the next updates:
+  Next updates expected features:
    - microservices. Powered by Docker.
    - JUnit
    - SLF4J

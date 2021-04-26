@@ -23,10 +23,10 @@ Active command list (command prefix is ";"):
  
  - item "item name" - show short description of item from https://crossoutdb.com/api/v1/items
  - 
-     example: ;item scorp
+      example: ;item scorp
  - itemlist "item category" "item rarity" - show list of items from selected category with selected rarity
  - 
-     example: ;itemlist weapon legendary
+      example: ;itemlist weapon legendary
  - skynet - this is test feature. This command send all text after to remote server with 
     neural network developed with Python 3 and show you it's response.
     

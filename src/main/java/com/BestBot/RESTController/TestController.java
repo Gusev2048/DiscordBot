@@ -1,4 +1,4 @@
-package com.BestBot.Controller;
+package com.BestBot.RESTController;
 
 import com.BestBot.Service.TestParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class TestController {
 
     private TestParser testParser;
 
@@ -32,6 +32,6 @@ public class UserController {
     }
 
     private String getString(){
-        return testParser.getItemList().get(27).toString();
+        return testParser.getItems().get(27).toString();
     }
 }

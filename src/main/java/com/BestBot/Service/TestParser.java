@@ -18,9 +18,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @EnableAutoConfiguration
@@ -30,12 +29,13 @@ public class TestParser implements CrossoutdbParser{
     private final String api;
     private final String botType;
     private ItemEntityRepository itemEntityRepository;
-    private List<ItemEntity> itemList;
+    private Map<String, ItemEntity> items;
 
     public TestParser(@Value("${getItemApi}") String api, @Value("${botType}") String botType, ItemEntityRepository itemEntityRepositoryNew) {
         this.api = api;
         this.itemEntityRepository = itemEntityRepositoryNew;
         this.botType = botType;
+        this.items = new HashMap<>();
     }
 
     @Override
@@ -80,14 +80,18 @@ public class TestParser implements CrossoutdbParser{
                     )
                     .subscribe(itemList::add);
         }catch (Exception e){
+            e.printStackTrace();
         }
 
         itemList.stream()
                 .filter(Objects::nonNull)
                 .forEach(e -> itemEntityRepository.save(e));
-        this.itemList = itemList;
+
+        Flux.fromIterable(itemList)
+                             .subscribe(itemEntity -> items.put(itemEntity.getId().toString(), itemEntity));
     }
-    public List<ItemEntity> getItemList(){
-        return this.itemList;
+
+    public Map<String, ItemEntity> getItems(){
+        return this.items;
     }
 }

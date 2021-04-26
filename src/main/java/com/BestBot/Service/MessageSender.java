@@ -13,18 +13,16 @@ import java.util.Objects;
 public class MessageSender {
     private final long statusChannelId;
     private final long statusGuildId;
-    private JDA jda;
 
-    public MessageSender(@Value("${testChannelID}") long statusChannelId, @Value("${testGuildID}") long statusGuildId, JDA jda) {
+    public MessageSender(@Value("${testChannelID}") long statusChannelId, @Value("${testGuildID}") long statusGuildId) {
         this.statusChannelId = statusChannelId;
         this.statusGuildId = statusGuildId;
-        this.jda = jda;
     }
 
-    public void sengMessage(String text){
-        TextChannel statusChannel = Objects.requireNonNull(jda.getGuildById(statusGuildId)).getTextChannelById(statusChannelId);
-        Objects.requireNonNull(statusChannel).sendMessage(text).queue();
-    }
+//    public void sengMessage(String text){
+//        TextChannel statusChannel = Objects.requireNonNull(jda.getGuildById(statusGuildId)).getTextChannelById(statusChannelId);
+//        Objects.requireNonNull(statusChannel).sendMessage(text).queue();
+//    }
 
     public void sengMessage(TextChannel channel, String text){
         Objects.requireNonNull(channel).sendMessage(text).queue();

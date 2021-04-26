@@ -2,9 +2,10 @@
 
 Simple discord bot whith Crossout ingame market info
 
- - enable autocreate tables
- - enable auto update db state from crossutdb.com API
- - add url intarface to external command execution wits remote program complex.
+ - developed with Spring boot
+ - Hibernate & PostgreSQL included
+ - REST services - online
+ - Streams API, project Reactor etc
 
 HOWTO:
 

@@ -14,15 +14,10 @@ import reactor.core.publisher.Mono;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
-@PropertySource("classpath:commands.properties")
 public class DiscordCommandExecutor {
-
-    @Value("${firstCommand}")
-    private String firstCommand;
-    @Value("${secondCommand}")
-    private String secondCommand;
 
     Map<String, Color> colorMap;
 
@@ -56,11 +51,20 @@ public class DiscordCommandExecutor {
                             .build()).queue();
     }
 
+    public void buildMessageAll(TextChannel textChannel, String string){
+
+        EmbedBuilder builder = new EmbedBuilder();
+        textChannel.sendMessage(builder.setTitle("All items for category:")
+                .setColor(colorMap.get(Color.RED))
+                .addField("", string, true)
+                .build()).queue();
+    }
+
     public void setCommand(MessageReceivedEvent event) {
         TextChannel textChannel = event.getTextChannel();
         Message message = event.getMessage();
 
-        switch (event.getMessage().getContentDisplay().split(" ")[0]) {
+        switch (event.getMessage().getContentDisplay().split(" ")[0].toLowerCase()) {
             case ";item" -> {
                 Mono.just(message.getContentDisplay().split(" "))
                         .subscribe(e -> buildMessage(textChannel, entityFinder.getItemEntity(e[1]).isPresent() ? entityFinder.getItemEntity(e[1]).get() : testParser.getItems().get("Hurricane")));
@@ -68,6 +72,14 @@ public class DiscordCommandExecutor {
             case ";skynet" -> {
                 Mono.just(message.getContentDisplay().split(" "))
                         .subscribe(e -> cncController.sendToCNC(textChannel.getId(), message.getContentDisplay().replace(";skynet ", "")));
+            }
+            case ";itemlist" -> {
+
+                Mono.just(message.getContentDisplay().split(" "))
+                        .subscribe(e -> buildMessageAll(textChannel, entityFinder.getCategoryItems(e[1]).isPresent() ? entityFinder.getCategoryItems(e[1]).get().stream()
+                                                                                                                                    .filter(r -> r.getRarity().toLowerCase().contains(e[2].toLowerCase()))
+                                                                                                                                    .map(ItemEntity::getName)
+                                                                                                                                    .collect(Collectors.joining("\n")) : "No such category("));
             }
         }
     }

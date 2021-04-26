@@ -21,7 +21,7 @@ public class TestController {
     @GetMapping("/get0")
     public ResponseEntity getUsers(){
         try{
-            return ResponseEntity.ok(getString("27"));
+            return ResponseEntity.ok(getString("hurricane"));
         }catch (Exception e){
             return ResponseEntity.badRequest().body("error");
         }
@@ -32,7 +32,7 @@ public class TestController {
         System.out.println(string);
     }
 
-    private String getString(String id){
-        return testParser.getItems().get(id).toString();
+    private String getString(String name){
+        return testParser.getItems().get(name).toString();
     }
 }

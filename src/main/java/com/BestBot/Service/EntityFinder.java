@@ -34,13 +34,6 @@ public class EntityFinder {
         List<ItemEntity> itemEntityList = testParser.getItems().values().stream()
                 .toList();
 
-//        String categoryName = itemEntityList.stream()
-//                   .map(e -> e.getCategory())
-//                   .collect(Collectors.toSet()).stream()
-//                   .filter(e -> e.toLowerCase().contains(inputCategoryName))
-//                   .findFirst()
-//                .orElse("weapons");
-
         return Optional.of(itemEntityList.stream()
                 .filter(e -> e.getCategory().equalsIgnoreCase(itemEntityList.stream()
                         .map(r -> r.getCategory())
@@ -51,19 +44,3 @@ public class EntityFinder {
                 .toList());
     }
 }
-
-
-//          itemEntityList.stream()
-//             .map(e -> e.getCategory())
-//             .collect(Collectors.toSet()).stream()
-//             .filter(e -> e.toLowerCase().contains(categoryName))
-//             .findFirst();
-
-
-//.filter(e -> e.getCategory().equalsIgnoreCase(
-//        itemEntityList.stream()
-//        .map(r -> r.getCategory())
-//        .collect(Collectors.toSet()).stream()
-//        .filter(r -> r.toLowerCase().contains(categoryName))
-//        .findFirst().orElse("weapons").toLowerCase()
-//        )).map();

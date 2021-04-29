@@ -21,7 +21,7 @@ You can check it with discord:
     
 Active command list (command prefix is ";"):
  
- - item "item name" - show short description of item from https://crossoutdb.com/api/v1/items
+ - item "item name" - show short item description from https://crossoutdb.com/api/v1/items
   
       example: ;item scorp
       

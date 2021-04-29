@@ -25,7 +25,7 @@ Active command list (command prefix is ";"):
   
       example: ;item scorp
       
- - itemlist "item category" "item rarity" - show list of items from selected category with selected rarity
+ - itemlist "item category" "item rarity" - show list of items with selected category and rarity
   
       example: ;itemlist weapon legendary
       

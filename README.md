@@ -15,7 +15,8 @@ HOWTO:
 4. Run .jar
 5. Enjoy
 
-Bot ~~online about 24/7~~ not avaliable
+Bot ~~online about 24/7~~ not avaliable 
+
 You can check it with discord:
     ~~https://discord.gg/XdRpYnduTb~~
     
